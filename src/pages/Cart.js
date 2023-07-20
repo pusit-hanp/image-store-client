@@ -30,7 +30,7 @@ const Cart = () => {
     };
 
     const response = await fetch(
-      'http://localhost:8080/payment/create-checkout-session',
+      'https://image-store-app-api.onrender.com/payment/create-checkout-session',
       {
         method: 'POST',
         headers: headers,
