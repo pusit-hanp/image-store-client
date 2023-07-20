@@ -1,0 +1,20 @@
+.image-wrapper img {
+  width: 80%;
+}
+
+.category-buttons {
+  max-height: 100px; /* Set the maximum height for the buttons container */
+  overflow: auto; /* Enable scrolling if buttons exceed container height */
+}
+
+.image-description {
+  text-align: justify;
+  text-justify: inter-word;
+}
+
+.loading-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+}

@@ -1,0 +1,30 @@
+.edit-module {
+  width: 75%;
+  margin: auto;
+}
+
+.edit-content img {
+  max-width: 100%;
+  max-height: 100%;
+  border-radius: 2%;
+}
+
+.edit-content .form-field {
+  display: flex;
+  align-items: center;
+  margin-bottom: 1rem;
+}
+
+.edit-content .form-field label {
+  flex-basis: 20%;
+}
+
+.edit-content .form-field input,
+.edit-content .form-field select {
+  flex-basis: 80%;
+}
+
+.edit-content .edit-image-button {
+  display: flex;
+  justify-content: center;
+}

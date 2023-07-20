@@ -1,0 +1,28 @@
+.image-card {
+  background-color: white;
+}
+.image-card .image-details {
+  color: var(--color-1c1c1b);
+}
+.image-card .product-image img {
+  width: 100%;
+}
+.image-card .image-details a {
+  color: var(--color-1c1c1b);
+}
+.image-card .image-details a:hover {
+  text-decoration: underline;
+}
+/* 
+.image-card .addToCart {
+  background-color: var(--color-1c1c1b);
+}
+.image-card .addToCart:hover {
+  background-color: var(--color-1c1c1b);
+  transform: scale(1.05);
+} */
+.icon-button {
+  top: 1%;
+  right: 5%;
+  /* color: var(--color-f474b4); */
+}
