@@ -1,6 +1,7 @@
 import React, { createContext, useState, useEffect, useContext } from 'react';
 import axios from 'axios';
 import { UserContext } from './UserContext';
+import axiosSet from '../axiosConfig';
 
 export const ImageContext = createContext();
 
@@ -22,8 +23,9 @@ export const ImageProvider = ({ children }) => {
           url += '&status=All';
         }
 
-        const response = await fetch(url);
-        const data = await response.json();
+        const response = await axiosSet.get(url);
+        const data = response.data; // Get the data from the response object
+
         setImages(data.images);
         setTotalPages(data.totalPages);
       } catch (error) {

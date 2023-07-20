@@ -17,6 +17,7 @@ import {
 } from 'react-icons/bs';
 import { UserContext } from '../contexts/UserContext';
 import axios from 'axios';
+import axiosSet from '../axiosConfig';
 
 const CartButton = styled(Button)(({ theme, disabled }) => ({
   padding: '0.5rem 1rem',
@@ -54,7 +55,7 @@ const ImageInformation = () => {
       // const header = token ? { authtoken: token } : {};
       //const response = await axios.get(`/api/images/${imageId}`, { header });
       try {
-        const response = await axios.get(`/api/images/${imageId}`);
+        const response = await axiosSet.get(`/api/images/${imageId}`);
         console.log(response.data);
         setImage(response.data.image);
         //setStatus(response.data.status);
