@@ -23,7 +23,7 @@ export const ImageProvider = ({ children }) => {
           url += '&status=All';
         }
 
-        const response = await axiosSet.get(url);
+        const response = await axios.get(url);
         const data = response.data; // Get the data from the response object
 
         setImages(data.images);

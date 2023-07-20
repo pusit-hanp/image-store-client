@@ -55,7 +55,7 @@ const ImageInformation = () => {
       // const header = token ? { authtoken: token } : {};
       //const response = await axios.get(`/api/images/${imageId}`, { header });
       try {
-        const response = await axiosSet.get(`/api/images/${imageId}`);
+        const response = await axios.get(`/api/images/${imageId}`);
         console.log(response.data);
         setImage(response.data.image);
         //setStatus(response.data.status);
