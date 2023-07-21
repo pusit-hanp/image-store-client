@@ -3,44 +3,75 @@ import { Link, NavLink, useNavigate } from 'react-router-dom';
 import { Formik, Form, Field, ErrorMessage } from 'formik';
 import { Button, Card, CardContent, CardHeader } from '@mui/material';
 import * as Yup from 'yup';
-import axiosSet from '../axiosConfig';
+import axios from 'axios';
 import { Helmet } from 'react-helmet-async';
-// import { getAuth, signInWithEmailAndPassword } from 'firebase/auth';
 
 import '../styles/ImageUpload.css';
-import axios from 'axios';
+
+const CustomImageField = ({ field, form: { touched, errors }, ...props }) => {
+  return (
+    <div>
+      <input
+        type="file"
+        accept="image/*"
+        id={field.name}
+        {...field}
+        {...props}
+        style={{ padding: '10px' }}
+      />
+      {touched[field.name] && errors[field.name] && (
+        <div className="error">{errors[field.name]}</div>
+      )}
+    </div>
+  );
+};
 
 const ImageUpload = () => {
   const [error, setError] = useState('');
 
   const navigate = useNavigate();
 
+  const initialValues = {
+    title: '',
+    description: '',
+    imageFile: null,
+    price: '',
+    tags: '',
+  };
+
   const validationSchema = Yup.object({
     title: Yup.string().required('Title is required'),
     description: Yup.string().required('Description is required'),
-    price: Yup.number().required('Price is required').min(0),
     imageFile: Yup.mixed().required('An image file is required'),
+    price: Yup.number()
+      .required('Price is required')
+      .positive('Price must be a positive number'),
+    tags: Yup.string().required('Tags are required'),
   });
 
-  const imageUpload = async (values) => {
-    console.log(values);
+  const [uploadCount, setUploadCount] = useState(0);
+
+  const handleSubmit = async (values, { setFieldValue }) => {
+    const imageFile = document.getElementById('imageFile').files[0];
+    const formData = new FormData();
+    formData.append('title', values.title);
+    formData.append('description', values.description);
+    formData.append('price', values.price);
+    formData.append('tags', values.tags);
+    formData.append('imageFile', imageFile);
+    console.log(formData);
+    const config = {
+      headers: {
+        'content-type': 'multipart/form-data',
+      },
+    };
 
     try {
-      const post = {
-        title: values.title,
-        description: values.description,
-        tags: values.tags,
-        price: values.price,
-        imageFile: values.imageFile,
-      };
-      await axios.post('/url', {
-        body: post,
-      });
-
-      // Successful upload new image, navigate to another route
-      navigate('/home');
+      await axios.post('/api/image/upload', formData, config);
+      alert('The file is successfully uploaded');
+      setUploadCount((prevCount) => prevCount + 1); // Increment the upload count
+      setFieldValue('imageFile', null); // Reset the image field
     } catch (error) {
-      // Handle error if upload fails
       setError(error.message);
     }
   };
@@ -50,37 +81,19 @@ const ImageUpload = () => {
       <Helmet>
         <title>Upload new image</title>
       </Helmet>
-      <Link to="/" className="d-flex justify-content-center">
-        <h1 className="text-center mt-5">DevCorner</h1>
-      </Link>
-      <div className="imageUpload-body d-flex align-items-center justify-content-center flex-column mt-2">
-        <Card
-          className="imageUpload-card mt-4"
-          variant="outlined"
-          sx={{
-            width: 800,
-            padding: 1,
-          }}
-        >
+      <div className="imageUpload-body d-flex align-items-center justify-content-center flex-column mt-2 mb-5">
+        <Card className="imageUpload-card mt-4 py-1" variant="outlined">
           <CardHeader
             title="Image Upload"
             className="imageUpload-card-header mt-2"
-            sx={{
-              fontSize: 20,
-            }}
           />
           <CardContent className="imageUpload-card-content">
             {error && <p className="error">{error}</p>}
             <Formik
-              initialValues={{
-                title: '',
-                description: '',
-                tags: '',
-                price: '',
-                imageFile: '',
-              }}
+              initialValues={initialValues}
               validationSchema={validationSchema}
-              onSubmit={imageUpload}
+              onSubmit={handleSubmit}
+              key={uploadCount} // Use upload count as the key to force re-mount on each upload
             >
               <Form>
                 <div>
@@ -88,9 +101,8 @@ const ImageUpload = () => {
                   <Field
                     type="text"
                     name="title"
-                    id="title"
                     placeholder="Enter image title"
-                    className="imageUpload-field"
+                    className="imageUpload-field mb-2"
                   />
                   <ErrorMessage
                     name="title"
@@ -103,10 +115,9 @@ const ImageUpload = () => {
                   <Field
                     component="textarea"
                     name="description"
-                    id="description"
                     placeholder="Enter description"
                     rows="6"
-                    className="textArea-field"
+                    className="textArea-field mb-2"
                   />
                   <ErrorMessage
                     name="description"
@@ -119,9 +130,8 @@ const ImageUpload = () => {
                   <Field
                     type="text"
                     name="tags"
-                    id="tags"
                     placeholder="Enter tags"
-                    className="imageUpload-field"
+                    className="imageUpload-field mb-2"
                   />
                   <ErrorMessage name="tags" component="div" className="error" />
                 </div>
@@ -129,10 +139,9 @@ const ImageUpload = () => {
                   <label>Price</label>
                   <Field
                     type="number"
-                    step=".01"
                     name="price"
-                    id="price"
-                    className="imageUpload-field"
+                    placeholder="Enter price"
+                    className="imageUpload-field mb-2"
                   />
                   <ErrorMessage
                     name="price"
@@ -142,18 +151,7 @@ const ImageUpload = () => {
                 </div>
                 <div>
                   <label>Image file</label>
-                  <Field
-                    type="file"
-                    accept="image/*"
-                    name="imageFile"
-                    id="imageFile"
-                    className="imageUpload-field"
-                  />
-                  <ErrorMessage
-                    name="imageFile"
-                    component="div"
-                    className="error"
-                  />
+                  <Field component={CustomImageField} name="imageFile" />
                 </div>
 
                 <div className="d-flex flex-column align-items-center">
@@ -170,17 +168,6 @@ const ImageUpload = () => {
             </Formik>
           </CardContent>
         </Card>
-        <footer className="py-4 fixed-bottom">
-          <div className="container-xxl">
-            <div className="row">
-              <div className="col-12">
-                <p className="text-center mb-0 text-white">
-                  &copy; {new Date().getFullYear()}; Developer's Corner
-                </p>
-              </div>
-            </div>
-          </div>
-        </footer>
       </div>
     </>
   );
