@@ -13,14 +13,12 @@ import ImageUpload from './pages/ImageUpload';
 import LikedImage from './pages/LikedImage';
 import Cancel from './pages/Cancel';
 import Success from './pages/Success';
-import ReactUploadImage from './pages/test';
 
 function App() {
   return (
     <>
       <BrowserRouter>
         <Routes>
-          <Route path="/test" element={<ReactUploadImage />} />
           <Route path="/" element={<Layout />}>
             <Route index element={<Home />} />
             <Route path="about" element={<About />} />
