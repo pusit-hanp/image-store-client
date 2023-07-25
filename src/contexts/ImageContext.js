@@ -1,7 +1,6 @@
 import React, { createContext, useState, useEffect, useContext } from 'react';
 import axios from 'axios';
 import { UserContext } from './UserContext';
-import axiosSet from '../axiosConfig';
 
 export const ImageContext = createContext();
 
@@ -11,6 +10,7 @@ export const ImageProvider = ({ children }) => {
   const [currentPage, setCurrentPage] = useState(1);
   const imagesPerPage = 24;
   const [totalPages, setTotalPages] = useState(1);
+  const [category, setCategory] = useState(null);
 
   useEffect(() => {
     const fetchImages = async () => {
@@ -21,6 +21,10 @@ export const ImageProvider = ({ children }) => {
         if (userInfo.role === 'admin') {
           // Append filter query parameter to fetch only "Active" images
           url += '&status=All';
+        }
+
+        if (category !== null) {
+          url += `&cat=${category}`;
         }
 
         const response = await axios.get(url);
@@ -34,7 +38,7 @@ export const ImageProvider = ({ children }) => {
     };
 
     fetchImages();
-  }, [currentPage, imagesPerPage, userInfo.role]);
+  }, [category, currentPage, imagesPerPage, userInfo.role]);
 
   const paginate = (event, pageNumber) => {
     setCurrentPage(pageNumber);
@@ -64,7 +68,15 @@ export const ImageProvider = ({ children }) => {
 
   return (
     <ImageContext.Provider
-      value={{ images, currentPage, totalPages, paginate, UpdateImage }}
+      value={{
+        images,
+        currentPage,
+        totalPages,
+        paginate,
+        UpdateImage,
+        category,
+        setCategory,
+      }}
     >
       {children}
     </ImageContext.Provider>

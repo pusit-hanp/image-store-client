@@ -3,13 +3,11 @@ import { NavLink, Link } from 'react-router-dom';
 import { BiCart, BiLike, BiMenu, BiSearch, BiUser } from 'react-icons/bi';
 import '../styles/Header.css';
 import { UserContext } from '../contexts/UserContext';
+import { ImageContext } from '../contexts/ImageContext';
 
 const Header = () => {
-  const { user, handleSignOut } = useContext(UserContext);
-
-  const userInfo = localStorage.getItem('userInfo')
-    ? JSON.parse(localStorage.getItem('userInfo'))
-    : null;
+  const { user, userInfo, handleSignOut } = useContext(UserContext);
+  const { setCategory } = useContext(ImageContext);
 
   const cartImageCount = userInfo ? userInfo.cart.length : 0;
   const cartTotalPrice = userInfo
@@ -17,6 +15,16 @@ const Header = () => {
         .reduce((total, image) => total + parseFloat(image.price), 0)
         .toFixed(1)
     : 0;
+
+  const tagOptions = [
+    'Exploration and Production',
+    'Refining and Processing',
+    'Transportation and Distribution',
+    'Renewable Energy and Sustainability',
+    'Economics and Markets',
+    'Health, Safety, and Environment (HSE)',
+    'Technology and Innovation',
+  ];
 
   return (
     <>
@@ -47,7 +55,11 @@ const Header = () => {
           <div className="row align-items-center">
             <div className="col-2">
               <h2>
-                <Link className="text-white" to="/">
+                <Link
+                  className="text-white"
+                  to="/"
+                  onClick={() => setCategory(null)}
+                >
                   DevCorner
                 </Link>
               </h2>
@@ -168,41 +180,14 @@ const Header = () => {
                       className="dropdown-menu"
                       aria-labelledby="dropdownMenuButton1"
                     >
-                      <li>
-                        <Link className="dropdown-item text-white" to="#">
-                          Exploration and Production
-                        </Link>
-                      </li>
-                      <li>
-                        <Link className="dropdown-item text-white" to="#">
-                          Refining and Processing
-                        </Link>
-                      </li>
-                      <li>
-                        <Link className="dropdown-item text-white" to="#">
-                          Transportation and Distribution
-                        </Link>
-                      </li>
-                      <li>
-                        <Link className="dropdown-item text-white" to="#">
-                          Renewable Energy and Sustainability
-                        </Link>
-                      </li>
-                      <li>
-                        <Link className="dropdown-item text-white" to="#">
-                          Economics and Markets
-                        </Link>
-                      </li>
-                      <li>
-                        <Link className="dropdown-item text-white" to="#">
-                          Health, Safety, and Environment (HSE)
-                        </Link>
-                      </li>
-                      <li>
-                        <Link className="dropdown-item text-white" to="#">
-                          Technology and Innovation
-                        </Link>
-                      </li>
+                      {tagOptions.map((tag) => (
+                        <li
+                          className="dropdown-item text-white"
+                          onClick={() => setCategory(tag)}
+                        >
+                          {tag}
+                        </li>
+                      ))}
                     </ul>
                   </div>
                 </div>

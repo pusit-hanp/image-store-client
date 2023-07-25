@@ -16,11 +16,8 @@ const CartButton = styled(Button)(({ theme, disabled }) => ({
 }));
 
 const ImageCard = ({ image, handleEdit }) => {
-  const { user, handleAddToCart, handleToggleLike } = useContext(UserContext);
-
-  const userInfo = localStorage.getItem('userInfo')
-    ? JSON.parse(localStorage.getItem('userInfo'))
-    : null;
+  const { user, userInfo, handleAddToCart, handleToggleLike } =
+    useContext(UserContext);
 
   const [isHovered, setIsHovered] = useState(false);
 

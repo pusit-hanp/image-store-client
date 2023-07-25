@@ -1,5 +1,4 @@
-import React, { createContext, useContext, useEffect, useState } from 'react';
-import { ImageContext } from './ImageContext';
+import React, { createContext, useEffect, useState } from 'react';
 import { getAuth, onAuthStateChanged, signOut } from 'firebase/auth';
 import axios from 'axios';
 
@@ -21,10 +20,7 @@ export const UserProvider = ({ children }) => {
   //const { images } = useContext(ImageContext);
 
   const [user, setUser] = useState(null);
-  const [userInfo, setUserInfo] = useState(() => {
-    const storedUserInfo = localStorage.getItem('userInfo');
-    return storedUserInfo ? JSON.parse(storedUserInfo) : initialUser;
-  });
+  const [userInfo, setUserInfo] = useState(initialUser);
 
   const [isLoading, setIsLoading] = useState(true);
 
@@ -36,7 +32,6 @@ export const UserProvider = ({ children }) => {
           const response = await axios.get(`/api/user/${user.uid}`);
           setUser(user);
           setUserInfo(response.data);
-          localStorage.setItem('userInfo', JSON.stringify(response.data));
         } catch (error) {
           console.log('Error loading user data:', error);
         }
@@ -44,17 +39,10 @@ export const UserProvider = ({ children }) => {
         // User is signed out, reset the user state
         setUser(null);
         setUserInfo(initialUser);
-        localStorage.removeItem('userInfo');
       }
 
       setIsLoading(false);
     });
-
-    // Load user data from localStorage if available
-    const storedUserInfo = localStorage.getItem('userInfo');
-    if (storedUserInfo) {
-      setUserInfo(JSON.parse(storedUserInfo));
-    }
 
     return unsubscribe;
   }, []);
@@ -65,7 +53,6 @@ export const UserProvider = ({ children }) => {
       await signOut(auth);
       setUser(null);
       setUserInfo(initialUser);
-      localStorage.removeItem('userInfo');
     } catch (error) {
       console.log('Error signing out:', error);
     }
@@ -89,7 +76,6 @@ export const UserProvider = ({ children }) => {
       cart: [...userInfo.cart, image],
     };
     setUserInfo(updatedUserInfo);
-    localStorage.setItem('userInfo', JSON.stringify(updatedUserInfo));
     console.log(`Adding image`, image);
     console.log(updatedUserInfo);
 
@@ -105,7 +91,6 @@ export const UserProvider = ({ children }) => {
     const updatedUserInfo = { ...userInfo, cart: updatedCart };
 
     setUserInfo(updatedUserInfo);
-    localStorage.setItem('userInfo', JSON.stringify(updatedUserInfo));
 
     if (user) {
       const token = user && (await user.getIdToken());
@@ -129,7 +114,7 @@ export const UserProvider = ({ children }) => {
       );
       updatedUserInfo = { ...userInfo, likes: updatedLikes };
       setUserInfo(updatedUserInfo);
-      localStorage.setItem('userInfo', JSON.stringify(updatedUserInfo));
+
       console.log(`Removed image ${selectedImage._id} from liked images`);
       console.log(updatedUserInfo);
     } else {
@@ -139,7 +124,7 @@ export const UserProvider = ({ children }) => {
         likes: [...userInfo.likes, selectedImage],
       };
       setUserInfo(updatedUserInfo);
-      localStorage.setItem('userInfo', JSON.stringify(updatedUserInfo));
+
       console.log(`Added image`, selectedImage);
       console.log(updatedUserInfo);
     }
@@ -161,7 +146,6 @@ export const UserProvider = ({ children }) => {
       const response = await axios.get(`/api/user/${user.uid}`);
       setUser(user);
       setUserInfo(response.data);
-      localStorage.setItem('userInfo', JSON.stringify(response.data));
     } catch (error) {
       console.error('Error updating user:', error);
       // Handle the error appropriately (e.g., display an error message)

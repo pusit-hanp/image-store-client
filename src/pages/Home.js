@@ -6,7 +6,7 @@ import EditImageCard from '../components/EditImageCard';
 import { ImageContext } from '../contexts/ImageContext';
 
 const Home = () => {
-  const { images, currentPage, totalPages, paginate } =
+  const { images, currentPage, totalPages, paginate, category } =
     useContext(ImageContext);
 
   const [selectedImage, setSelectedImage] = useState(null);
@@ -29,6 +29,9 @@ const Home = () => {
           <div className="row">
             <div className="col-12">
               <h3 className="section-heading">Image Collection</h3>
+              {category && (
+                <h5 className="section-heading mt-1">Category: {category}</h5>
+              )}
             </div>
           </div>
           {selectedImage && (

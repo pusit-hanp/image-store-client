@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useContext, useState } from 'react';
 import { Link, NavLink, useNavigate } from 'react-router-dom';
 import { Formik, Form, Field, ErrorMessage } from 'formik';
 import { Button, Card, CardContent, CardHeader } from '@mui/material';
@@ -6,8 +6,8 @@ import * as Yup from 'yup';
 import axios from 'axios';
 import { Helmet } from 'react-helmet-async';
 import { AiOutlineEyeInvisible, AiOutlineEye } from 'react-icons/ai';
-import { getAuth, createUserWithEmailAndPassword } from 'firebase/auth';
 import '../styles/Register.css';
+import { ImageContext } from '../contexts/ImageContext';
 
 const Register = () => {
   const [error, setError] = useState('');
@@ -15,6 +15,8 @@ const Register = () => {
   const [confirmedPasswordVisible, setConfirmedPasswordVisible] =
     useState(false);
   const navigate = useNavigate();
+
+  const { setCategory } = useContext(ImageContext);
 
   const validationSchema = Yup.object({
     email: Yup.string()
@@ -38,41 +40,6 @@ const Register = () => {
     ),
     address: Yup.string().required('Address is required'),
   });
-
-  // const signUp = async (values) => {
-  //   try {
-  //     if (values.password !== values.confirmPassword) {
-  //       setError('Password and Confirmed password do not match');
-  //       return;
-  //     }
-
-  //     const newUser = await createUserWithEmailAndPassword(getAuth(), values.email, values.password);
-  //     console.log(newUser.user.uid);
-
-  //     const userData = {
-  //       uid: newUser.user.uid,
-  //       email: values.email,
-  //       password: values.password,
-  //       firstName: values.firstName,
-  //       lastName: values.lastName,
-  //       phone: values.phone,
-  //       address: values.address,
-  //       role: "user",
-  //       status:"inactive",
-  //       cart: [],
-  //       likes: [],
-  //       transactions: [],
-  //     };
-
-  //     await axios.post('/user', userData);
-
-  //     //Successful registration, navigate to login route
-  //     navigate('/login');
-  //   } catch (error) {
-  //     // Handle error if registration fails
-  //     setError(error.message);
-  //   }
-  // };
 
   const signUp = async (values) => {
     try {
@@ -113,7 +80,9 @@ const Register = () => {
         <title>Register</title>
       </Helmet>
       <Link to="/" className="d-flex justify-content-center">
-        <h1 className="text-center mt-5">DevCorner</h1>
+        <h1 className="text-center mt-5" onClick={() => setCategory(null)}>
+          DevCorner
+        </h1>
       </Link>
       <div className="sign-up-body d-flex align-items-center justify-content-center flex-column mt-2">
         <Card

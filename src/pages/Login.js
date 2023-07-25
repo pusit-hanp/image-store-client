@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useContext, useState } from 'react';
 import { Link, NavLink, useLocation, useNavigate } from 'react-router-dom';
 import { Formik, Form, Field, ErrorMessage } from 'formik';
 import { Button, Card, CardContent, CardHeader } from '@mui/material';
@@ -8,6 +8,7 @@ import { getAuth, signInWithEmailAndPassword } from 'firebase/auth';
 import { AiOutlineEyeInvisible, AiOutlineEye } from 'react-icons/ai';
 
 import '../styles/Login.css';
+import { ImageContext } from '../contexts/ImageContext';
 
 const Login = () => {
   const [error, setError] = useState('');
@@ -16,6 +17,8 @@ const Login = () => {
   const { search } = useLocation();
   const redirectInUrl = new URLSearchParams(search).get('redirect');
   const redirect = redirectInUrl ? redirectInUrl : '/';
+
+  const { setCategory } = useContext(ImageContext);
 
   const navigate = useNavigate();
 
@@ -51,7 +54,11 @@ const Login = () => {
       <Helmet>
         <title>Sign In</title>
       </Helmet>
-      <Link to="/" className="d-flex justify-content-center">
+      <Link
+        to="/"
+        className="d-flex justify-content-center"
+        onClick={() => setCategory(null)}
+      >
         <h1 className="text-center mt-5">DevCorner</h1>
       </Link>
       <div className="sign-in-body d-flex align-items-center justify-content-center flex-column mt-2">
