@@ -17,7 +17,7 @@ import {
 } from 'react-icons/bs';
 import { UserContext } from '../contexts/UserContext';
 import axios from 'axios';
-import axiosSet from '../axiosConfig';
+import { ImageContext } from '../contexts/ImageContext';
 
 const CartButton = styled(Button)(({ theme, disabled }) => ({
   padding: '0.5rem 1rem',
@@ -38,16 +38,15 @@ const theme = createTheme({
 });
 
 const ImageInformation = () => {
-  const { user, handleAddToCart, handleToggleLike } = useContext(UserContext);
+  const { user, userInfo, handleAddToCart, handleToggleLike } =
+    useContext(UserContext);
+
+  const { setCategory } = useContext(ImageContext);
 
   const [image, setImage] = useState(null);
   //const [status, setStatus] = useState({ isLiked: false, isInCart: false });
   const [loading, setLoading] = useState(true);
   const { imageId } = useParams();
-
-  const userInfo = localStorage.getItem('userInfo')
-    ? JSON.parse(localStorage.getItem('userInfo'))
-    : { cart: [], likes: [] };
 
   useEffect(() => {
     const loadImageInfo = async () => {
@@ -67,7 +66,7 @@ const ImageInformation = () => {
     };
 
     loadImageInfo();
-  }, []);
+  }, [imageId]);
 
   // const location = useLocation();
   // //console.log(location);
@@ -120,9 +119,10 @@ const ImageInformation = () => {
                   <div className="category-buttons d-flex flex-wrap">
                     {image.tags.sort().map((category) => (
                       <Link
-                        to=""
+                        to="/"
                         className="d-flex align-items-center"
                         key={category}
+                        onClick={() => setCategory(category)}
                       >
                         <Button className="m-1">{category}</Button>
                       </Link>

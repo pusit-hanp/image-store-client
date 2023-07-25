@@ -8,11 +8,7 @@ import { loadStripe } from '@stripe/stripe-js';
 import axios from 'axios';
 
 const Cart = () => {
-  const { user, handleDeleteFromCart } = useContext(UserContext);
-
-  const userInfo = localStorage.getItem('userInfo')
-    ? JSON.parse(localStorage.getItem('userInfo'))
-    : { cart: [] };
+  const { userInfo, handleDeleteFromCart } = useContext(UserContext);
 
   const isEmpty = userInfo && userInfo.cart.length === 0;
 
