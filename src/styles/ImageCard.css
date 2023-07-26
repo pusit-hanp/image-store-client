@@ -1,11 +1,16 @@
 .image-card {
   background-color: white;
+  overflow: hidden;
+  height: 300px;
 }
 .image-card .image-details {
   color: var(--color-1c1c1b);
 }
 .image-card .product-image img {
   width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center;
 }
 .image-card .image-details a {
   color: var(--color-1c1c1b);
