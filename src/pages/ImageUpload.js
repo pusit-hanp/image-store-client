@@ -36,7 +36,7 @@ const tagOptions = [
   'Health, Safety, and Environment (HSE)',
   'Technology and Innovation',
 ];
-
+const MAX_PRICE = 10000;
 const ImageUpload = () => {
   const [error, setError] = useState('');
 
@@ -46,8 +46,22 @@ const ImageUpload = () => {
     title: '',
     description: '',
     imageFile: null,
-    price: '',
+    price: null,
     tags: [],
+  };
+
+  const priceMaxValidation = (value) => {
+    if (value > MAX_PRICE) {
+      return `The price cannot exceed ${MAX_PRICE}`;
+    }
+    return true;
+  };
+
+  const priceNegativeValidation = (value) => {
+    if (value < 0) {
+      return `The price cannot be negative`;
+    }
+    return true; // Return true when the validation passes
   };
 
   const validationSchema = Yup.object({
@@ -56,7 +70,13 @@ const ImageUpload = () => {
     imageFile: Yup.mixed().required('An image file is required'),
     price: Yup.number()
         .required('Price is required')
-        .positive('Price must be a positive number'),
+        .positive('Price must be a positive number')
+        .test(
+            'maxPrice',
+            `The price cannot exceed ${MAX_PRICE}`,
+            (value) => value === null || value <= MAX_PRICE
+        )
+        .test('minPrice', 'The price cannot be negative', (value) => value === null || value >= 0),
     tags: Yup.array().min(1, 'At least one tag is required').required('Tags are required'),
   });
 
