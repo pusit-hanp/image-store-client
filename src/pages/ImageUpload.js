@@ -11,19 +11,19 @@ import MultipleSelectChip from '../components/MultipleSelectChip';
 
 const CustomImageField = ({ field, form: { touched, errors }, ...props }) => {
   return (
-      <div>
-        <input
-            type="file"
-            accept="image/*"
-            id={field.name}
-            {...field}
-            {...props}
-            style={{ padding: '10px' }}
-        />
-        {touched[field.name] && errors[field.name] && (
-            <div className="error">{errors[field.name]}</div>
-        )}
-      </div>
+    <div>
+      <input
+        type="file"
+        accept="image/*"
+        id={field.name}
+        {...field}
+        {...props}
+        style={{ padding: '10px' }}
+      />
+      {touched[field.name] && errors[field.name] && (
+        <div className="error">{errors[field.name]}</div>
+      )}
+    </div>
   );
 };
 
@@ -55,9 +55,11 @@ const ImageUpload = () => {
     description: Yup.string().required('Description is required'),
     imageFile: Yup.mixed().required('An image file is required'),
     price: Yup.number()
-        .required('Price is required')
-        .positive('Price must be a positive number'),
-    tags: Yup.array().min(1, 'At least one tag is required').required('Tags are required'),
+      .required('Price is required')
+      .positive('Price must be a positive number'),
+    tags: Yup.array()
+      .min(1, 'At least one tag is required')
+      .required('Tags are required'),
   });
 
   const [uploadCount, setUploadCount] = useState(0);
@@ -78,7 +80,7 @@ const ImageUpload = () => {
     };
 
     try {
-      await axios.post('/api/image/upload', formData, config);
+      await axios.post('/api/images/upload', formData, config);
       alert('The file is successfully uploaded');
       setUploadCount((prevCount) => prevCount + 1); // Increment the upload count
       setFieldValue('imageFile', null); // Reset the image field
@@ -89,83 +91,99 @@ const ImageUpload = () => {
   };
 
   return (
-      <>
-        <Helmet>
-          <title>Upload new image</title>
-        </Helmet>
-        <div className="imageUpload-body d-flex align-items-center justify-content-center flex-column mt-2 mb-5">
-          <Card className="imageUpload-card mt-4 py-1" variant="outlined">
-            <CardHeader title="Image Upload" className="imageUpload-card-header mt-2" />
-            <CardContent className="imageUpload-card-content">
-              {error && <p className="error">{error}</p>}
-              <Formik
-                  initialValues={initialValues}
-                  validationSchema={validationSchema}
-                  onSubmit={handleSubmit}
-                  key={uploadCount} // Use upload count as the key to force re-mount on each upload
-              >
-                <Form>
-                  <div>
-                    <label>Title</label>
-                    <Field
-                        type="text"
-                        name="title"
-                        placeholder="Enter image title"
-                        className="imageUpload-field mb-2"
-                    />
-                    <ErrorMessage name="title" component="div" className="error" />
-                  </div>
-                  <div>
-                    <label>Description</label>
-                    <Field
-                        component="textarea"
-                        name="description"
-                        placeholder="Enter description"
-                        rows="6"
-                        className="textArea-field mb-2"
-                    />
-                    <ErrorMessage name="description" component="div" className="error" />
-                  </div>
-                  <div className="form-field">
-                    <label htmlFor="tags">Tags </label>
-                    <Field
-                        type="text"
-                        name="tags"
-                        component={MultipleSelectChip}
-                        names={tagOptions}
-                    />
-                    <ErrorMessage
-                        name="tags"
-                        component="div"
-                        className="error"
-                    />
-                  </div>
-                  <div>
-                    <label>Price</label>
-                    <Field
-                        type="number"
-                        name="price"
-                        placeholder="Enter price"
-                        className="imageUpload-field mb-2"
-                    />
-                    <ErrorMessage name="price" component="div" className="error" />
-                  </div>
-                  <div>
-                    <label>Image file</label>
-                    <Field component={CustomImageField} name="imageFile" />
-                  </div>
+    <>
+      <Helmet>
+        <title>Upload new image</title>
+      </Helmet>
+      <div className="imageUpload-body d-flex align-items-center justify-content-center flex-column mt-2 mb-5">
+        <Card className="imageUpload-card mt-4 py-1" variant="outlined">
+          <CardHeader
+            title="Image Upload"
+            className="imageUpload-card-header mt-2"
+          />
+          <CardContent className="imageUpload-card-content">
+            {error && <p className="error">{error}</p>}
+            <Formik
+              initialValues={initialValues}
+              validationSchema={validationSchema}
+              onSubmit={handleSubmit}
+              key={uploadCount} // Use upload count as the key to force re-mount on each upload
+            >
+              <Form>
+                <div>
+                  <label>Title</label>
+                  <Field
+                    type="text"
+                    name="title"
+                    placeholder="Enter image title"
+                    className="imageUpload-field mb-2"
+                  />
+                  <ErrorMessage
+                    name="title"
+                    component="div"
+                    className="error"
+                  />
+                </div>
+                <div>
+                  <label>Description</label>
+                  <Field
+                    component="textarea"
+                    name="description"
+                    placeholder="Enter description"
+                    rows="6"
+                    className="textArea-field mb-2"
+                  />
+                  <ErrorMessage
+                    name="description"
+                    component="div"
+                    className="error"
+                  />
+                </div>
+                <div className="form-field">
+                  <label htmlFor="tags">Tags </label>
+                  <Field
+                    type="text"
+                    name="tags"
+                    component={MultipleSelectChip}
+                    names={tagOptions}
+                  />
+                  <ErrorMessage name="tags" component="div" className="error" />
+                </div>
+                <div>
+                  <label>Price</label>
+                  <Field
+                    type="number"
+                    name="price"
+                    placeholder="Enter price"
+                    className="imageUpload-field mb-2"
+                  />
+                  <ErrorMessage
+                    name="price"
+                    component="div"
+                    className="error"
+                  />
+                </div>
+                <div>
+                  <label>Image file</label>
+                  <Field component={CustomImageField} name="imageFile" />
+                </div>
 
-                  <div className="d-flex flex-column align-items-center">
-                    <Button type="submit" className="mt-3" color="primary" variant="contained">
-                      Upload
-                    </Button>
-                  </div>
-                </Form>
-              </Formik>
-            </CardContent>
-          </Card>
-        </div>
-      </>
+                <div className="d-flex flex-column align-items-center">
+                  <Button
+                    type="submit"
+                    className="mt-3"
+                    color="primary"
+                    variant="contained"
+                  >
+                    Upload
+                  </Button>
+                </div>
+              </Form>
+            </Formik>
+          </CardContent>
+        </Card>
+      </div>
+    </>
   );
 };
 
