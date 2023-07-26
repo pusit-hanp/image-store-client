@@ -97,6 +97,7 @@ const ImageUpload = () => {
       },
     };
 
+
     try {
       await axios.post('/api/image/upload', formData, config);
       alert('The file is successfully uploaded');
