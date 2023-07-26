@@ -90,7 +90,7 @@ const ImageCard = ({ image, handleEdit }) => {
                 <img src={image.imageLocation} alt={image.title} />
               </div>
             </Link>
-            <div className="d-flex align-items-center justify-content-between">
+            <div className="image-content d-flex align-items-center justify-content-between">
               <div className="image-details mt-3 ms-2">
                 <Link to={`/image/${image._id}`}>
                   <h5 className="image-title">
