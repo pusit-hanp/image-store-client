@@ -145,7 +145,7 @@ const Login = () => {
                     Sign in
                   </Button>
                   <div className="mt-3">
-                    <NavLink to="/forgot-password">Forgot password?</NavLink>
+                    <NavLink to="/forgotPassword">Forgot password?</NavLink>
                     <Link to={`/register?redirect=${redirect}`}>
                       Don't have an account yet? Sign up!
                     </Link>
