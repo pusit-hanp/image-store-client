@@ -1,10 +1,12 @@
 import React, { useState } from 'react';
-import { Link, NavLink, useNavigate } from 'react-router-dom';
+import { useContext } from 'react';
+// import { useNavigate } from 'react-router-dom';
 import { Formik, Form, Field, ErrorMessage } from 'formik';
 import { Button, Card, CardContent, CardHeader } from '@mui/material';
 import * as Yup from 'yup';
 import axios from 'axios';
 import { Helmet } from 'react-helmet-async';
+import { UserContext } from '../contexts/UserContext';
 
 import '../styles/ImageUpload.css';
 import MultipleSelectChip from '../components/MultipleSelectChip';
@@ -39,10 +41,12 @@ const tagOptions = [
 const MAX_PRICE = 10000;
 const ImageUpload = () => {
   const [error, setError] = useState('');
-
-  const navigate = useNavigate();
+  const { user } = useContext(UserContext);
+  console.log('ImageUpload: User is', user);
+  // const navigate = useNavigate();
 
   const initialValues = {
+    seller: user,
     title: '',
     description: '',
     imageFile: null,
@@ -85,11 +89,13 @@ const ImageUpload = () => {
   const handleSubmit = async (values, { setFieldValue }) => {
     const imageFile = document.getElementById('imageFile').files[0];
     const formData = new FormData();
+    const seller = user ? user.uid : null;
     formData.append('title', values.title);
     formData.append('description', values.description);
     formData.append('price', values.price);
     formData.append('tags', values.tags.join(',')); // Join tags into a comma-separated string
     formData.append('imageFile', imageFile);
+    formData.append('seller', seller);
     console.log(formData);
     const config = {
       headers: {
@@ -99,7 +105,7 @@ const ImageUpload = () => {
 
 
     try {
-      await axios.post('/api/image/upload', formData, config);
+      await axios.post('/api/images/upload', formData, config);
       alert('The file is successfully uploaded');
       setUploadCount((prevCount) => prevCount + 1); // Increment the upload count
       setFieldValue('imageFile', null); // Reset the image field
