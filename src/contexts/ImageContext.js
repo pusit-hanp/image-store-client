@@ -51,10 +51,21 @@ export const ImageProvider = ({ children }) => {
 
       // Refetch data
       try {
-        const response = await fetch(
-          `/api/images?page=${currentPage}&perPage=${imagesPerPage}`
-        );
-        const data = await response.json();
+        let url = `/api/images?page=${currentPage}&perPage=${imagesPerPage}`;
+
+        // Check if user role is "admin"
+        if (userInfo.role === 'admin') {
+          // Append filter query parameter to fetch only "Active" images
+          url += '&status=All';
+        }
+
+        if (category !== null) {
+          url += `&cat=${category}`;
+        }
+
+        const response = await axios.get(url);
+        const data = response.data; // Get the data from the response object
+
         setImages(data.images);
         setTotalPages(data.totalPages);
       } catch (error) {
