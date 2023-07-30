@@ -11,7 +11,7 @@ const initialUser = {
   role: 'user',
   cart: [],
   likes: [],
-  transaction: [],
+  transactions: [],
 };
 
 export const UserContext = createContext();
