@@ -31,3 +31,12 @@
 .title:hover {
   text-decoration: underline;
 }
+
+.checkout-form label {
+  font-size: 25px;
+  font-weight: bold;
+}
+
+.checkout-form .error {
+  font-size: 15px;
+}

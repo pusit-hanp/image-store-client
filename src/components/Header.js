@@ -60,7 +60,7 @@ const Header = () => {
                   to="/"
                   onClick={() => setCategory(null)}
                 >
-                  DevCorner
+                  Image-Store
                 </Link>
               </h2>
             </div>

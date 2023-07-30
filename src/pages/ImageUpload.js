@@ -1,10 +1,12 @@
 import React, { useState } from 'react';
-import { Link, NavLink, useNavigate } from 'react-router-dom';
+import { useContext } from 'react';
+// import { useNavigate } from 'react-router-dom';
 import { Formik, Form, Field, ErrorMessage } from 'formik';
 import { Button, Card, CardContent, CardHeader } from '@mui/material';
 import * as Yup from 'yup';
 import axios from 'axios';
 import { Helmet } from 'react-helmet-async';
+import { UserContext } from '../contexts/UserContext';
 
 import '../styles/ImageUpload.css';
 import MultipleSelectChip from '../components/MultipleSelectChip';
@@ -36,17 +38,19 @@ const tagOptions = [
   'Health, Safety, and Environment (HSE)',
   'Technology and Innovation',
 ];
-
+const MAX_PRICE = 10000;
 const ImageUpload = () => {
   const [error, setError] = useState('');
-
-  const navigate = useNavigate();
+  const { user } = useContext(UserContext);
+  console.log('ImageUpload: User is', user);
+  // const navigate = useNavigate();
 
   const initialValues = {
+    seller: user,
     title: '',
     description: '',
     imageFile: null,
-    price: '',
+    price: null,
     tags: [],
   };
 
@@ -56,7 +60,17 @@ const ImageUpload = () => {
     imageFile: Yup.mixed().required('An image file is required'),
     price: Yup.number()
       .required('Price is required')
-      .positive('Price must be a positive number'),
+      .positive('Price must be a positive number')
+      .test(
+        'maxPrice',
+        `The price cannot exceed ${MAX_PRICE}`,
+        (value) => value === null || value <= MAX_PRICE
+      )
+      .test(
+        'minPrice',
+        'The price cannot be negative',
+        (value) => value === null || value >= 0
+      ),
     tags: Yup.array()
       .min(1, 'At least one tag is required')
       .required('Tags are required'),
@@ -66,7 +80,11 @@ const ImageUpload = () => {
 
   const handleSubmit = async (values, { setFieldValue }) => {
     const imageFile = document.getElementById('imageFile').files[0];
+
+    // retrive user token
+    const token = user && (await user.getIdToken());
     const formData = new FormData();
+
     formData.append('title', values.title);
     formData.append('description', values.description);
     formData.append('price', values.price);
@@ -76,6 +94,7 @@ const ImageUpload = () => {
     const config = {
       headers: {
         'content-type': 'multipart/form-data',
+        authtoken: token,
       },
     };
 

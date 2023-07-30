@@ -1,4 +1,4 @@
-import React, { useContext } from 'react';
+import React, { useContext, useState } from 'react';
 import { Helmet } from 'react-helmet-async';
 import { UserContext } from '../contexts/UserContext';
 import '../styles/Cart.css';
@@ -6,10 +6,21 @@ import DeleteIcon from '@mui/icons-material/Delete';
 import { Link } from 'react-router-dom';
 import { loadStripe } from '@stripe/stripe-js';
 import axios from 'axios';
+import * as Yup from 'yup';
+import { ErrorMessage, Field, Form, Formik } from 'formik';
+import { styled } from '@mui/system';
+import { TextField } from '@mui/material';
+
+const StyledTextField = styled(TextField)(
+  () => `
+  width: 400px;
+  font-size: 0.875rem;
+  font-weight: 800;
+  line-height: 1.5;`
+);
 
 const Cart = () => {
-  const { userInfo, handleDeleteFromCart } = useContext(UserContext);
-
+  const { user, userInfo, handleDeleteFromCart } = useContext(UserContext);
   const isEmpty = userInfo && userInfo.cart.length === 0;
 
   const cartTotalPrice = userInfo
@@ -18,13 +29,22 @@ const Cart = () => {
         .toFixed(2)
     : 0;
 
-  const makePayment = async () => {
+  const validationSchema = Yup.object({
+    email: Yup.string()
+      .email('Invalid email address')
+      .required('Email is required'),
+  });
+
+  const makePayment = async (values) => {
     try {
       const stripe = await loadStripe(process.env.REACT_APP_STRIPE_P_KEYS);
-      const product = userInfo.cart;
-      const body = { product };
+      const imageIds = userInfo.cart.map((image) => image._id);
+      const email = values.email;
+      const token = user && (await user.getIdToken());
+      const body = { imageIds, email };
       const headers = {
         'Content-Type': 'application/json',
+        authtoken: token,
       };
 
       const response = await axios.post(
@@ -104,18 +124,43 @@ const Cart = () => {
                     <div className="d-flex flex-column align-items-end">
                       <h4>{`SubTotal: $${cartTotalPrice}`}</h4>
                       <p>Taxes and shipping cakculated at checkout</p>
-                      <div onClick={makePayment}>
-                        <Link className="button">Checkout</Link>
-                      </div>
-
-                      {/* <form
-                        action="http://localhost:8080/create-checkout-session"
-                        method="POST"
-                      >
-                        <Link className="button">Checkout</Link>
-                      </form> */}
                     </div>
                   </div>
+                </div>
+                <div className="checkout-form col-12 mt-4">
+                  <Formik
+                    initialValues={{
+                      email: userInfo.email,
+                    }}
+                    validationSchema={validationSchema}
+                    onSubmit={makePayment}
+                  >
+                    <Form>
+                      <div className="d-flex justify-content-center mb-2">
+                        <ErrorMessage
+                          name="email"
+                          component="div"
+                          className="error"
+                        />
+                      </div>
+                      <div className="d-flex align-items-center justify-content-center mb-4">
+                        <label htmlFor="email" className="me-3">
+                          Send Images To:
+                        </label>
+                        <Field
+                          type="text"
+                          as={StyledTextField}
+                          name="email"
+                          id="email"
+                          placeholder="Enter your email"
+                          className="signin-field"
+                        />
+                      </div>
+                      <div className="d-flex justify-content-center">
+                        <button className="button">Checkout</button>
+                      </div>
+                    </Form>
+                  </Formik>
                 </div>
               </div>
             )}

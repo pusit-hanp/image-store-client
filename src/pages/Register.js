@@ -81,12 +81,12 @@ const Register = () => {
       </Helmet>
       <Link to="/" className="d-flex justify-content-center">
         <h1 className="text-center mt-5" onClick={() => setCategory(null)}>
-          DevCorner
+          Image-Store
         </h1>
       </Link>
-      <div className="sign-up-body d-flex align-items-center justify-content-center flex-column mt-2">
+      <div className="sign-up-body d-flex align-items-center justify-content-center flex-column mt-2 mb-5">
         <Card
-          className="signup-card mt-4 mb-4"
+          className="signup-card mt-4 mb-5"
           variant="outlined"
           sx={{
             width: 600,
@@ -282,18 +282,18 @@ const Register = () => {
             </Formik>
           </CardContent>
         </Card>
-        <footer className="py-4 fixed-bottom">
-          <div className="container-xxl">
-            <div className="row">
-              <div className="col-12">
-                <p className="text-center mb-0 text-white">
-                  &copy; {new Date().getFullYear()}; Developer's Corner
-                </p>
-              </div>
+      </div>
+      <footer className="py-4 fixed-bottom">
+        <div className="container-xxl">
+          <div className="row">
+            <div className="col-12">
+              <p className="text-center mb-0 text-white">
+                &copy; {new Date().getFullYear()}; Image-Store
+              </p>
             </div>
           </div>
-        </footer>
-      </div>
+        </div>
+      </footer>
     </>
   );
 };

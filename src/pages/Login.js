@@ -59,7 +59,7 @@ const Login = () => {
         className="d-flex justify-content-center"
         onClick={() => setCategory(null)}
       >
-        <h1 className="text-center mt-5">DevCorner</h1>
+        <h1 className="text-center mt-5">Image-Store</h1>
       </Link>
       <div className="sign-in-body d-flex align-items-center justify-content-center flex-column mt-2">
         <Card
@@ -160,7 +160,7 @@ const Login = () => {
             <div className="row">
               <div className="col-12">
                 <p className="text-center mb-0 text-white">
-                  &copy; {new Date().getFullYear()}; Developer's Corner
+                  &copy; {new Date().getFullYear()}; Image-Store
                 </p>
               </div>
             </div>
