@@ -53,7 +53,7 @@ const Header = () => {
       <header className="header-upper py-3">
         <div className="container-xxl">
           <div className="row align-items-center">
-            <div className="col-2">
+            <div className="col-8">
               <h2>
                 <Link
                   className="text-white"
@@ -64,7 +64,7 @@ const Header = () => {
                 </Link>
               </h2>
             </div>
-            <div className="col-6">
+            {/* <div className="col-6">
               <div className="input-group">
                 <input
                   type="text"
@@ -77,7 +77,7 @@ const Header = () => {
                   <BiSearch className="fs-5" />
                 </span>
               </div>
-            </div>
+            </div> */}
             <div className="col-4">
               <div className="header-upper-links d-flex align-items-center justify-content-between">
                 <div>
@@ -200,10 +200,17 @@ const Header = () => {
             </div>
             <div className="col-9">
               {userInfo && userInfo.role === 'admin' && (
-                <div>
-                  <NavLink to="/image/imageUpload" className="text-white mb-0">
-                    Image Management
-                  </NavLink>
+                <div className="d-flex gap-30">
+                  <div>
+                    <NavLink to="/userManagement" className="text-white">
+                      User Management
+                    </NavLink>
+                  </div>
+                  <div>
+                    <NavLink to="/image/imageUpload" className="text-white">
+                      Upload Image
+                    </NavLink>
+                  </div>
                 </div>
               )}
             </div>
