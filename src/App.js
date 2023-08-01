@@ -14,6 +14,7 @@ import LikedImage from './pages/LikedImage';
 import Cancel from './pages/Cancel';
 import Success from './pages/Success';
 import ForgotPassword from './pages/ForgotPassword';
+import NotFoundPage from './pages/NotFoundPage';
 
 function App() {
   return (
@@ -36,6 +37,7 @@ function App() {
           <Route path="forgotPassword" element={<ForgotPassword />} />
 
           <Route path="register" element={<Register />} />
+          <Route path="*" element={<NotFoundPage />} />
         </Routes>
       </BrowserRouter>
     </>

@@ -1,0 +1,33 @@
+/* NotFoundPage.css */
+
+.not-found-page {
+    padding-top: 200px; /* Add extra space at the top */
+    padding-bottom: 200px; /* Add extra space at the bottom */
+    text-align: center;
+}
+
+.not-found-heading {
+    color: red; /* Set the text color to red */
+    font-size: 48px; /* Set the font size to large */
+}
+
+.not-found-text {
+    font-size: 18px; /* Set the font size for the text */
+}
+
+.go-home-button {
+    margin-top: 20px; /* Add space between the text and the button */
+}
+
+.go-home-button a {
+    background-color: #007bff; /* Set the button background color */
+    color: #fff; /* Set the button text color */
+    padding: 10px 20px; /* Add padding to the button */
+    border-radius: 5px; /* Add border radius to the button */
+    text-decoration: none; /* Remove underline from the button */
+    font-size: 16px; /* Set the font size for the button text */
+}
+
+.go-home-button a:hover {
+    background-color: #0056b3; /* Change button background color on hover */
+}
