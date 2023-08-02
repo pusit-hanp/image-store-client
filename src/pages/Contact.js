@@ -168,8 +168,11 @@ const Contact = () => {
                       </li>
                       <li className="mb-3 d-flex align-items-center gap-15">
                         <BiMailSend className="fs-5" />
-                        <a href="mailto:aaa@gmail.com" className="d-block mb-0">
-                          aaa@gmail.com
+                        <a
+                          href="mailto:imagecapstone@gmail.com"
+                          className="d-block mb-0"
+                        >
+                          imagecapstone@gmail.com
                         </a>
                       </li>
                       <li className="mb-3 d-flex align-items-center gap-15">
