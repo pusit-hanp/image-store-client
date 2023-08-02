@@ -1,7 +1,7 @@
 import React, { useContext } from 'react';
 import '../styles/Profile.css';
 import { Helmet } from 'react-helmet-async';
-import { useNavigate, useParams } from 'react-router-dom';
+import { Navigate, useNavigate, useParams } from 'react-router-dom';
 import { Formik, Form, Field, ErrorMessage } from 'formik';
 import * as Yup from 'yup';
 import { Button, Card, CardContent, CardHeader } from '@mui/material';
@@ -14,6 +14,7 @@ const Profile = () => {
   const { user, userInfo, updateUser } = useContext(UserContext);
 
   const [error, setError] = useState();
+  const navigate = useNavigate();
 
   const validationSchema = Yup.object({
     firstName: Yup.string().required('First name is required'),
@@ -39,6 +40,8 @@ const Profile = () => {
       };
 
       updateUser(updatedUser, headers);
+      alert('User profile is updated');
+      navigate('/');
     } catch (error) {
       setError(error.message);
     }

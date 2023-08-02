@@ -120,14 +120,14 @@ const Header = () => {
                             User Profile
                           </Link>
                         </li>
-                        <li>
+                        {/* <li>
                           <Link
                             className="dropdown-item text-white"
                             to="/order-history"
                           >
                             Order History
                           </Link>
-                        </li>
+                        </li> */}
                       </ul>
                     </div>
                   ) : (
@@ -201,11 +201,11 @@ const Header = () => {
             <div className="col-9">
               {userInfo && userInfo.role === 'admin' && (
                 <div className="d-flex gap-30">
-                  <div>
+                  {/* <div>
                     <NavLink to="/userManagement" className="text-white">
                       User Management
                     </NavLink>
-                  </div>
+                  </div> */}
                   <div>
                     <NavLink to="/image/imageUpload" className="text-white">
                       Upload Image

@@ -174,7 +174,7 @@ const ImageInformation = () => {
                   )}
                 </CartButton>
 
-                <ThemeProvider theme={theme}>
+                {/* <ThemeProvider theme={theme}>
                   <Button
                     className="buyItNow mt-3"
                     variant="contained"
@@ -183,7 +183,7 @@ const ImageInformation = () => {
                   >
                     Buy It Now <BsCartCheck className="fs-4 ms-2" />
                   </Button>
-                </ThemeProvider>
+                </ThemeProvider> */}
               </div>
             </div>
           </div>

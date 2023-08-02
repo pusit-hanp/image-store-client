@@ -1,4 +1,4 @@
-import React, { useContext, useState } from 'react';
+import React, { useContext } from 'react';
 import { Helmet } from 'react-helmet-async';
 import { UserContext } from '../contexts/UserContext';
 import '../styles/Cart.css';
