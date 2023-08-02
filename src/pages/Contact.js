@@ -5,6 +5,8 @@ import { Button } from '@mui/material';
 import { BiHome, BiInfoCircle, BiMailSend, BiPhoneCall } from 'react-icons/bi';
 import { Formik, Form, Field, ErrorMessage } from 'formik';
 import * as Yup from 'yup';
+import axios from 'axios';
+import { useNavigate } from 'react-router-dom';
 
 const Contact = () => {
   const validationSchema = Yup.object({
@@ -12,9 +14,32 @@ const Contact = () => {
     email: Yup.string()
       .email('Invalid email address')
       .required('Email is required'),
-    mobile: Yup.string().required('Mobile number is required'),
+    mobile: Yup.string().matches(
+      /^[0-9\- ]{10}$/,
+      'Phone number must contain 10 digits'
+    ),
     comments: Yup.string().required('Comments are required'),
   });
+
+  const navigate = useNavigate();
+
+  const sendMessage = async (values) => {
+    try {
+      const contactData = {
+        name: values.name,
+        email: values.email,
+        mobile: values.mobile,
+        comments: values.comments,
+      };
+      console.log(contactData);
+      await axios.post('/api/contact/', contactData);
+      alert('Message sent successfully. Thanks for contacting us!');
+      navigate('/');
+    } catch (error) {
+      console.log(error);
+      alert("Sorry, message cannot be sent");
+    }
+  };
 
   return (
     <>
@@ -41,39 +66,6 @@ const Contact = () => {
               <div className="contact-inner-wrapper d-flex justify-content-between">
                 <div>
                   <h3 className="contact-title mb-4">Contact</h3>
-                  {/* <form action="" className="d-flex flex-column gap-15">
-                    <div>
-                      <input
-                        type="text"
-                        className="form-control"
-                        placeholder="Name"
-                      />
-                    </div>
-                    <div>
-                      <input
-                        type="email"
-                        className="form-control"
-                        placeholder="Email"
-                      />
-                    </div>
-                    <div>
-                      <input
-                        type="tel"
-                        className="form-control"
-                        placeholder="Mobile Number"
-                      />
-                    </div>
-                    <div>
-                      <textarea
-                        className="form-control w-100"
-                        id=""
-                        cols="30"
-                        rows="5"
-                        placeholder="Comments"
-                      ></textarea>
-                    </div>
-                    <Button>Submit</Button>
-                  </form> */}
                   <Formik
                     initialValues={{
                       name: '',
@@ -82,11 +74,7 @@ const Contact = () => {
                       comments: '',
                     }}
                     validationSchema={validationSchema}
-                    onSubmit={(values, actions) => {
-                      // Handle form submission
-                      console.log(values);
-                      actions.setSubmitting(false);
-                    }}
+                    onSubmit={sendMessage}
                   >
                     <Form className="d-flex flex-column gap-15">
                       <div>
@@ -157,7 +145,7 @@ const Contact = () => {
                       <li className="mb-3 d-flex align-items-center gap-15">
                         <BiHome className="fs-5" />
                         <address className="mb-0">
-                          111 anyST Calgary, Alberta 2t2 2t2
+                          111 ST Calgary, Alberta T2T 2T2
                         </address>
                       </li>
                       <li className="mb-3 d-flex align-items-center gap-15">
