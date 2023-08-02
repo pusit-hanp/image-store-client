@@ -1,6 +1,7 @@
 import React from 'react';
 import { BsFacebook, BsInstagram, BsYoutube } from 'react-icons/bs';
 import '../styles/Footer.css';
+import { Link } from 'react-router-dom';
 
 const Footer = () => {
   return (
@@ -29,15 +30,15 @@ const Footer = () => {
                 </a>
               </div>
               <div className="social_icons d-flex align-items-center justify-content-center gap-15 mt-3">
-                <a href="" className="text-white">
+                <Link className="text-white">
                   <BsFacebook className="fs-4" />
-                </a>
-                <a href="" className="text-white">
+                </Link>
+                <Link className="text-white">
                   <BsInstagram className="fs-4" />
-                </a>
-                <a href="" className="text-white">
+                </Link>
+                <Link className="text-white">
                   <BsYoutube className="fs-4" />
-                </a>
+                </Link>
               </div>
             </div>
           </div>
