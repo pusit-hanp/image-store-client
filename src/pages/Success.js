@@ -11,7 +11,7 @@ const Success = () => {
         <p className="mt-2">
           We appreciate your business! If you have any questions, please email
           us at
-          <a href="mailto:orders@example.com">orders@example.com</a>.
+          <a href="mailto:imagecapstone@gmail.com">imagecapstone@gmail.com</a>.
         </p>
         <div className="mt-4">
           <Link className="button " to="/">

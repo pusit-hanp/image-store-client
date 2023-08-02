@@ -8,7 +8,7 @@ function Cancel() {
       <h4>Oops! Your payment has been cancelled.</h4>
       <p className="mt-2">
         We appreciate your business! If you have any questions, please email us
-        at <a href="mailto:orders@example.com">orders@example.com</a>.
+        at <a href="imagecapstone@gmail.com">imagecapstone@gmail.com</a>.
       </p>
       <div className="mt-4">
         <Link className="button" to="/">

@@ -23,10 +23,10 @@ const Footer = () => {
                   +1 (825) 333-3333
                 </a>
                 <a
-                  href="mailto:aaa@gmail.com"
+                  href="mailto:imagecapstone@gmail.com"
                   className="text-white d-block mt-2 mb-0"
                 >
-                  aaa@gmail.com
+                  imagecapstone@gmail.com
                 </a>
               </div>
               <div className="social_icons d-flex align-items-center justify-content-center gap-15 mt-3">
